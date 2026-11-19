@@ -110,3 +110,94 @@ The platform uses provider adapters rather than assuming every product exposes t
 ## Security limitations
 
 The current project-creation endpoint uses fixed development tenant/user UUIDs. Authentication and tenant isolation are not implemented. Do not expose this development service publicly or process real customer data until identity, authorization, rate limits, secret management, audit controls, and isolated generated-code execution are added.
+
+#Instructions to run the code
+
+Docker Running:
+
+Get-Location
+
+Test-Path .\infra\docker-compose.yml
+
+Test-Path .\infra\schema.sql
+
+output -- True
+
+docker version
+
+docker compose version
+
+docker compose -f .\infra\docker-compose.yml config
+
+docker compose -f .\infra\docker-compose.yml up -d
+
+python: -->
+
+cd agent-service
+
+py -3.12 -m venv .venv
+
+.\.venv\Scripts\Activate.ps1
+
+If PowerShell blocks activation, run:
+
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+Then activate it again:
+.\.venv\Scripts\Activate.ps1
+
+Upgrade pip:
+python -m pip install --upgrade pip
+
+Install the AI dependencies:
+pip install -r requirements.txt
+
+Run your tests:
+pytest -q
+
+Terminal 1 — Python AI Agent
+Python
+
+cd agent-service
+.\.venv\Scripts\Activate.ps1
+python -m uvicorn app.main:app --reload --port 8001
+
+Runs LangGraph + FastAPI.
+
+Terminal 2 — Spring Boot
+Java 21
+
+cd backend
+mvn spring-boot:run
+
+If using Neon, set the three database environment variables in this terminal before starting Maven.
+
+Terminal 3 — Frontend
+Next.js
+
+cd frontend
+npm install
+npm run dev
+
+Runs the website.
+
+Database
+Hosted or local
+
+Use your hosted PostgreSQL database, or start the Docker PostgreSQL container if Docker is working.
+
+Local URLs
+Service URL
+Frontend http://localhost:3000
+Spring Boot http://localhost:8080
+Python AI Agent http://localhost:8001
+Agent health check http://localhost:8001/health
+Backend health check http://localhost:8080/api/health
+
+The startup order should be:
+
+1. Database
+2. Python AI Agent
+3. Spring Boot backend
+4. Next.js frontend
+   Keep all three application terminals running while using the website.

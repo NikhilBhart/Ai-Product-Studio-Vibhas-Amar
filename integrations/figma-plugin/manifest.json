@@ -1,0 +1,8 @@
+{
+  "name": "AI Product Studio Importer",
+  "id": "ai-product-studio-importer-dev",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"]
+}

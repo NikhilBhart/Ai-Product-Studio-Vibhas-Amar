@@ -1,0 +1,21 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: studio-api
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/ai_product_studio}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
+    hikari:
+      initialization-fail-timeout: 0
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+studio:
+  agent-service-url: ${AGENT_SERVICE_URL:http://localhost:8001}
